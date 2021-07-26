@@ -1,6 +1,6 @@
-## Server Properties
-server:
-  port: 5000
+### Server Properties
+#server:
+#  port: 5000
 ## Spring DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
 spring:
   datasource:
