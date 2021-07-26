@@ -1,0 +1,37 @@
+## Server Properties
+server:
+  port: 5000
+## Spring DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/pokemon_data?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: root
+    password:
+  ## Hibernate Properties
+  # The SQL dialect makes Hibernate generate better SQL for the chosen database
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+  # Initialize the datasource with available DDL and DML scripts
+  sql:
+    init:
+      mode: always
+  ## Jackson Properties
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    time-zone: UTC
+## Hibernate Logging
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+## App Properties
+app:
+  jwtSecret: daddassawsawsd9999
+  jwtExpirationInMs: 604800000
+
