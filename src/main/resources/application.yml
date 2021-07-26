@@ -7,6 +7,12 @@ spring:
     url: jdbc:mysql://localhost:3306/pokemon_data?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
     password:
+    driverClassName: org.postgresql.Driver
+    maxActive: 10
+    maxIdle: 5
+    minIdle: 2
+    initialSize: 5
+    removeAbandoned: true
   ## Hibernate Properties
   # The SQL dialect makes Hibernate generate better SQL for the chosen database
   jpa:
