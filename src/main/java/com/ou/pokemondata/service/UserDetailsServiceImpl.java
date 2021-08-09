@@ -2,6 +2,7 @@ package com.ou.pokemondata.service;
 
 import com.ou.pokemondata.controller.dto.LoginRequest;
 import com.ou.pokemondata.controller.dto.RegisterRequest;
+import com.ou.pokemondata.controller.dto.UserSummaryResponse;
 import com.ou.pokemondata.domain.UserEntity;
 import com.ou.pokemondata.mapper.UserMapper;
 import com.ou.pokemondata.repository.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,12 +45,10 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-
         UserEntity user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with username or email: " + usernameOrEmail)
                 );
-
         return UserPrincipal.create(user);
     }
 
@@ -62,13 +62,12 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public ResponseEntity<?> loginUser(LoginRequest loginRequest) {
+    public ResponseEntity<?> loginUser(LoginRequest loginRequest) throws BadCredentialsException {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsernameOrEmail(),
                         loginRequest.getPassword()
-                )
-        );
+                ));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -103,5 +102,18 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
                 userMapper.toApiResponse(true, "User registered successfully!"));
     }
 
+    @Override
+    public ResponseEntity<?> checkToken(String token) {
+        if (!tokenProvider.validateToken(token)) {
+            return new ResponseEntity<>(
+                    userMapper.toValidResponse(tokenProvider.validateToken(token), "Token is invalid!"),
+                    HttpStatus.UNAUTHORIZED);
+        }
+        return ResponseEntity.ok(userMapper.toValidResponse(tokenProvider.validateToken(token), "Token is valid!"));
+    }
 
+    @Override
+    public UserSummaryResponse getCurrentUser(Long id, String username, String firstName, String lastName) {
+        return userMapper.toUserSummaryResponse(id, username, firstName, lastName);
+    }
 }

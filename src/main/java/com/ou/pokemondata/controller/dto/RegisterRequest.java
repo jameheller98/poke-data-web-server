@@ -1,9 +1,12 @@
 package com.ou.pokemondata.controller.dto;
 
+import com.ou.pokemondata.security.constraint.FieldMatch;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@FieldMatch(first = "password", second = "confirmPassword", message = "The Password fields must match!")
 public class RegisterRequest {
 
     @NotBlank
@@ -27,12 +30,18 @@ public class RegisterRequest {
     @Size(min = 6, max = 20)
     private final String password;
 
-    private RegisterRequest(String firstName, String lastName, String username, String email, String password) {
+    @NotBlank
+    @Size(min = 6, max = 20)
+    private final String confirmPassword;
+
+
+    private RegisterRequest(String firstName, String lastName, String username, String email, String password, String confirmPassword) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.confirmPassword = confirmPassword;
     }
 
     public static RegisterRequestBuilder builder() {
@@ -59,6 +68,10 @@ public class RegisterRequest {
         return password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
     public static class RegisterRequestBuilder {
 
         private String firstName;
@@ -66,6 +79,7 @@ public class RegisterRequest {
         private String username;
         private String email;
         private String password;
+        private String confirmPassword;
 
         public RegisterRequestBuilder() {
         }
@@ -95,8 +109,13 @@ public class RegisterRequest {
             return this;
         }
 
+        public RegisterRequestBuilder confirmPassword(String confirmPassword) {
+            this.confirmPassword = confirmPassword;
+            return this;
+        }
+
         public RegisterRequest build() {
-            return new RegisterRequest(firstName, lastName, username, email, password);
+            return new RegisterRequest(firstName, lastName, username, email, password, confirmPassword);
         }
     }
 }

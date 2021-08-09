@@ -1,8 +1,6 @@
 package com.ou.pokemondata.mapper;
 
-import com.ou.pokemondata.controller.dto.ApiResponse;
-import com.ou.pokemondata.controller.dto.JwtAuthenticationResponse;
-import com.ou.pokemondata.controller.dto.RegisterRequest;
+import com.ou.pokemondata.controller.dto.*;
 import com.ou.pokemondata.domain.RoleEntity;
 import com.ou.pokemondata.domain.RoleName;
 import com.ou.pokemondata.domain.UserEntity;
@@ -31,8 +29,24 @@ public class UserMapper {
                 .build();
     }
 
+    public ValidResponse toValidResponse(Boolean valid, String message) {
+        return ValidResponse.builder()
+                .valid(valid)
+                .message(message)
+                .build();
+    }
+
     public JwtAuthenticationResponse toJwtAuthenticationResponse(String jwt) {
         return JwtAuthenticationResponse.builder().accessToken(jwt).build();
+    }
+
+    public UserSummaryResponse toUserSummaryResponse(Long id, String username, String firstName, String lastName) {
+        return UserSummaryResponse.builder()
+                .id(id)
+                .username(username)
+                .firstName(firstName)
+                .lastName(lastName)
+                .build();
     }
 
     public UserEntity toEntity(RegisterRequest registerRequest) {

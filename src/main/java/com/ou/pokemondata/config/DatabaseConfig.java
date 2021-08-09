@@ -1,4 +1,5 @@
-package com.example.demo;
+// Heroku
+package com.ou.pokemondata.config;
 
 import com.zaxxer.hikari.*;
 import org.springframework.beans.factory.annotation.Value;

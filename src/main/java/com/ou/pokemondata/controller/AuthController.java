@@ -5,10 +5,7 @@ import com.ou.pokemondata.controller.dto.RegisterRequest;
 import com.ou.pokemondata.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,5 +28,10 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         return userService.createUser(registerRequest);
+    }
+
+    @GetMapping("/check_token")
+    public ResponseEntity<?> checkToken(@RequestParam(name = "token") String token) {
+        return userService.checkToken(token);
     }
 }
