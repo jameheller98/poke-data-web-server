@@ -8,7 +8,7 @@ spring:
 #    username: root
 #    password:
     ## Heroku
-    url: jdbc:postgresql://ec2-34-200-139-9.compute-1.amazonaws.com:5432/dbrqci0j8anbs?user=gmsbrhtcyhjpqy&password=132a01a2bae1f00d65290f4e2326e85a377ea8eb8c868e100e6b07a80e1281f3
+    url: jdbc:postgresql://ec2-34-200-139-9.compute-1.amazonaws.com:5432/dbrqci0j8anbs?user=gmsbrhtcyhjpqy&password=132a01a2bae1f00d65290f4e2326e85a377ea8eb8c868e100e6b07a80e1281f3?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
     username: gmsbrhtcyhjpqy
     password: 132a01a2bae1f00d65290f4e2326e85a377ea8eb8c868e100e6b07a80e1281f3
     driver-class-name: org.postgresql.Driver
