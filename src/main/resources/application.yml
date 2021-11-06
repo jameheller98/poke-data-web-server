@@ -8,9 +8,9 @@ spring:
 #    username: root
 #    password:
     ## Heroku
-    url: jdbc:postgres://kohgxjahedmnai:8b5a53a4a6e51e37ce6954ca106641fb75824341084df7d327d9f4cbad620d20@ec2-52-86-223-172.compute-1.amazonaws.com:5432/d40grobs4qfc5u?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
-    username: kohgxjahedmnai
-    password: 8b5a53a4a6e51e37ce6954ca106641fb75824341084df7d327d9f4cbad620d20
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
     driverClassName: org.postgresql.Driver
     maxActive: 10
     maxIdle: 5
