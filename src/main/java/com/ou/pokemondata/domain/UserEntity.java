@@ -7,9 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "user", uniqueConstraints = {
@@ -64,10 +62,17 @@ public class UserEntity extends DateAuditEntity {
     )
     private Set<RoleEntity> roles = new HashSet<>();
 
+    @OneToMany(
+            mappedBy = "builder",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<BuilderEntity> builders = new ArrayList<>();
+
     public UserEntity() {
     }
 
-    private UserEntity(Long id, String firstName, String lastName, String username, String email, String password, Set<RoleEntity> roles) {
+    private UserEntity(Long id, String firstName, String lastName, String username, String email, String password, Set<RoleEntity> roles, List<BuilderEntity> builders) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -75,6 +80,7 @@ public class UserEntity extends DateAuditEntity {
         this.password = password;
         this.roles = roles;
         this.id = id;
+        this.builders = builders;
     }
 
     public static UserEntityBuilder builder() {
@@ -109,6 +115,8 @@ public class UserEntity extends DateAuditEntity {
         return roles;
     }
 
+    public List<BuilderEntity> getBuilders() {return builders;}
+
     public UserEntity addRole(RoleEntity role) {
         roles.add(role);
         role.getUsers().add(this);
@@ -119,6 +127,16 @@ public class UserEntity extends DateAuditEntity {
         roles.remove(role);
         role.getUsers().remove(this);
         return this;
+    }
+
+    public void addBuilder(BuilderEntity builder) {
+        builders.add(builder);
+        builder.setUser(this);
+    }
+
+    public void removeBuilder(BuilderEntity builder) {
+        builders.remove(builder);
+        builder.setUser(null);
     }
 
     @Override
@@ -143,6 +161,7 @@ public class UserEntity extends DateAuditEntity {
         private String email;
         private String password;
         private Set<RoleEntity> roles = new HashSet<>();
+        private List<BuilderEntity> builders = new ArrayList<>();
 
         public UserEntityBuilder() {
         }
@@ -182,8 +201,13 @@ public class UserEntity extends DateAuditEntity {
             return this;
         }
 
+        public UserEntityBuilder builders(List<BuilderEntity> builders) {
+            this.builders = builders;
+            return this;
+        }
+
         public UserEntity build() {
-            return new UserEntity(id, firstName, lastName, username, email, password, roles);
+            return new UserEntity(id, firstName, lastName, username, email, password, roles, builders);
         }
     }
 }
